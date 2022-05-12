@@ -7,9 +7,7 @@ const News = () => {
   const [article, setArticle] = useState();
   const [sameArticles, setSameArticles] = useState([]);
 
-  const body = {
-    background: "#002137"
-  }
+  
   useEffect(() => {
     const fetchData = async () => {
       const articleResp = await fetch(`https://api.spaceflightnewsapi.net/v3/articles?id=${id}`);
@@ -29,7 +27,7 @@ const News = () => {
 
   return (
     <center>
-      <div style={body}>
+   
         <div className="news">
         </div>
        
@@ -84,7 +82,7 @@ const News = () => {
             }
           </div>
         </div>
-      </div>
+    
     </center>
   );
 };
