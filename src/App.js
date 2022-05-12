@@ -1,6 +1,6 @@
 import "./App.css";
 
-import { BrowserRouter, Routes, Route,Outlet,Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route,Outlet,Navigate, HashRouter } from "react-router-dom";
 
 
 import CartPage from "./components/Cart";
@@ -13,7 +13,7 @@ import Main from "./components/Main/Main";
 function App() {
   return (
     <CartContextProvider>
-      <BrowserRouter>
+      <HashRouter>
         
           <Routes>
           <Route path='/' element={<Layout />}>
@@ -29,7 +29,7 @@ function App() {
 
           </Routes>
         
-      </BrowserRouter>
+      </HashRouter>
     </CartContextProvider>
   );
 }
