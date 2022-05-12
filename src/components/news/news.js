@@ -6,15 +6,7 @@ const News = () => {
   const { id } = useParams();
   const [article, setArticle] = useState();
   const [sameArticles, setSameArticles] = useState([]);
-  const container = {
-    background: "#d6eff8", /* Цвет фона */
-    padding: "1px", /* Поля вокруг текста */
-    border: "2px solid #0069b5", /* Параметры синей рамки */
-    outline: "2px solid #c52b1c",/* Параметры красной рамки */
-    width: "800px"
 
-
-  }
   const body = {
     background: "#002137"
   }
@@ -40,11 +32,11 @@ const News = () => {
       <div style={body}>
         <div className="news">
         </div>
-        <div style={container}>
+       
           <div>
             <div>
               <h1>Title : {article?.title}</h1>
-            </div>
+           
             <div>
             <span>
                 Summary : {article?.summary}
@@ -59,10 +51,10 @@ const News = () => {
               <span>Date updatedAt : {article?.updatedAt}</span>
             </div>
             <div>
-              <div style={container}><span><img
+              <span><img
                 src={article?.imageUrl} width="800" height="500"
                 alt="new"
-              /></span></div>
+              /></span>
             </div>
 
             <a

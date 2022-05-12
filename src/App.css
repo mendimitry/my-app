@@ -13,7 +13,40 @@
   }
 }
 
+@media screen and (min-width: 1200px) and (max-width: 4000px)
+{     
+  body{
+      width: 1140px;
+  }
+}
 
+@media screen and (min-width: 992px) and (max-width: 1199px)
+{     
+  body{
+      width: 960px;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px)
+{     
+  body{
+      width: 720px;
+  }
+}
+
+@media screen and (min-width: 576px) and (max-width: 767px)
+{     
+  body{
+      width: 540px;
+  }
+}
+
+@media screen and (min-width: 0px) and (max-width: 575px)
+{     
+  body{
+      width: auto;
+  }
+}
 
 .App-link {
   color: #61dafb;
