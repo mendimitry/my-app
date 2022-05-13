@@ -7,7 +7,12 @@ export default function CartContextProvider({ children }) {
 
   const addToCart = (product) => {
     setCart([...cart, product]);
-    localStorage.setItem('bookmarks', JSON.stringify(cart))
+    var movies = localStorage.getItem("bookmarks");
+    movies = JSON.parse(movies || '[]');
+    cart.concat(movies);
+    localStorage.setItem("bookmarks", JSON.stringify(cart));
+
+
 
   }
 
