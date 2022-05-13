@@ -7,15 +7,15 @@ export default function CartContextProvider({ children }) {
 
   const addToCart = (product) => {
     setCart([...cart, product]);
+    localStorage.setItem('bookmarks', JSON.stringify(cart))
+
   }
-  
-  localStorage.setItem("bookmarks",JSON.stringify(cart));
 
 
-  var data = {bookmarks:[]};
-var stored = localStorage.getItem('bookmarks');
 
-  
+
+
+
   const removeFromCart = (product) => {
     const temp = [...cart];
     const index = temp.findIndex((cp) => cp.id === product.id);
@@ -25,17 +25,17 @@ var stored = localStorage.getItem('bookmarks');
 
 
   const PlusFromCart = (product) => {
-    setCart([...cart, product]);
+    const currentTableData = JSON.parse(localStorage.getItem("bookmarks"))
+    setCart([...currentTableData, product]);
   };
-  if (stored)
-  data = JSON.parse(stored);
+
+
 
 
   const values = {
-    
+
     addToCart,
     cart,
-    data,
     removeFromCart,
     PlusFromCart
 

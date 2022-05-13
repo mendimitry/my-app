@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect, useMemo } from "react";
 import { useCart, } from "../../hooks/cart/useCart";
 
+
 import { Link } from "react-router-dom";
 import Inform from "../Main/Inform";
 
@@ -11,31 +12,13 @@ export default function CartPage() {
 
 
   const [newsPerPage] = useState(3)
-  let [posts, setPosts] = useState(
-  );
   let PageSize = 7;
   let [limit, setLimit] = useState(50);
-
-
+  let [btn, setBtn] = useState("main-btn");
+  const [posts, setPosts] = useState(localStorage.getItem('bookmarks') ? JSON.parse(localStorage.getItem('bookmarks')) : []);
   const { cart } = useCart();
 
-
   const [articles, setArticles] = useState([])
-  const [loading, setLoading] = useState(false)
-
-
-  
-  useEffect(() => {
-    const getBookmarks = async () => {
-      setLoading(true)
-      const bookmarks = JSON.parse(localStorage.getItem('bookmarks'))
-      setPosts(bookmarks)
-
-    }
-    getBookmarks()
-  }, [])
-
-
   const [currentPage, setCurrentPage] = useState(1);
 
   const currentTableData = useMemo(() => {
@@ -45,14 +28,15 @@ export default function CartPage() {
   }, [currentPage]);
 
 
-  let getNews = () => {
-    async function getData() {
+  const showMore = () => {
 
-      setPosts(cart.map((item) => <Inform key={item.id} data={item} />));
-    }
-    getData();
+
+    const currentTableData = JSON.parse(localStorage.getItem("bookmarks"))
+    setPosts(currentTableData)
+
+
   };
-  useEffect(getNews, [limit]);
+
 
   return (
 
@@ -85,17 +69,22 @@ export default function CartPage() {
 
         <Pagination
           className="centerPagination"
+
+          currentPage={currentPage}
           totalCount={cart.length}
           pageSize={PageSize}
           itemsCountPerPage={1}
           totalItemsCount={45}
           pageRangeDisplayed={10}
-          onChange={page => setCurrentPage(page)}
-          itemClass="page-item"
-          linkClass="page-link"
+          onChange={(page) => setCurrentPage(page)}
+
         />
 
       </table>
+
+      <button className={btn} onClick={showMore}>
+        Page BackWard
+      </button>
     </div>
 
 
