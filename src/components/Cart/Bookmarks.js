@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import BookmarksMap from './BookmarksMap';
 import Pagination from "react-js-pagination";
+
+
 
 
 function Bookmarks() {
@@ -33,8 +34,37 @@ function Bookmarks() {
     return (
         <div className='displayBookmarks'>
             <h2>Bookmarks</h2>
-            <BookmarksMap articles={currentNews}  />
+            <div>
 
+      <table className="table">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>URL</th>
+              <th>TITLE</th>
+              <th>updatedAt</th>
+              <th>publishedAt</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentNews.map(item => {
+              return (
+                <tr>
+                  <td>{item.id}</td>
+                  <td>{item.url}</td>
+                  <td>{item.title}</td>
+                  <td>{item.updatedAt}</td>
+                  <td>{item.publishedAt}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+
+       
+
+      </table>
             {articles.length > 5 && <>
 
                 <Pagination
@@ -56,6 +86,7 @@ function Bookmarks() {
             </>
             }
 
+        </div>
         </div>
     )
 }

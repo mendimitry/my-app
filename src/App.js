@@ -3,7 +3,7 @@ import "./App.css";
 import { BrowserRouter, Routes, Route,Outlet,Navigate, HashRouter } from "react-router-dom";
 
 
-import CartPage from "./components/Cart";
+
 import CartContextProvider from "./components/Cart/CartContextProvider";
 import About from './components/about/about';
 import Layout from './components/layout/layout';
