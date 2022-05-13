@@ -3,8 +3,6 @@ import BookmarksMap from './BookmarksMap';
 import Pagination from "react-js-pagination";
 
 
-
-//TODO массив закладок храни в localStorage 
 function Bookmarks() {
     const [articles, setArticles] = useState([])
     const [loading, setLoading] = useState(false)
