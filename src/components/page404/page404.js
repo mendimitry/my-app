@@ -16,7 +16,7 @@ const Page404 = () => {
     <div style={body}>
       <div className="page404">
         <center>
-          <img src="http://setupwindows.ru/wp-content/uploads/2018/04/404-wordpress-min.png"></img>
+        <h1>Страница не известна. Начальная страница : <a href="/"></a></h1>
         </center>
       </div>
     </div>
