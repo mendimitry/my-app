@@ -10,6 +10,7 @@ import Layout from './components/layout/layout';
 import News from './components/news/news';
 import Page404 from './components/page404/page404';
 import Main from "./components/Main/Main";
+import Bookmarks from "./components/Cart/Bookmarks";
 function App() {
   return (
     <CartContextProvider>
@@ -23,7 +24,7 @@ function App() {
         <Route path=':id' element={<News />} />
       </Route>
       <Route path='/about' element={<About />} />
-      <Route path='/bookmarks' element={<CartPage />} />
+      <Route path='/bookmarks' element={<Bookmarks />} />
       <Route path='*' element={<Page404 />} />
     </Route>
 

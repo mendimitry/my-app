@@ -29,7 +29,7 @@ export default function CartPage() {
 
 
 
-
+  
   const showMore = () => {
 
 
@@ -83,10 +83,6 @@ export default function CartPage() {
         />
 
       </table>
-
-      <button className={btn} onClick={showMore}>
-        Page BackWard
-      </button>
     </div>
 
 

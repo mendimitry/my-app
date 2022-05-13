@@ -5,17 +5,11 @@ export const useCart = () => {
 
   const { cart, addToCart, removeFromCart, PlusFromCart } = useContext(CartContext);
 
-
-
-  
-
-
   return {
     cart,
     addToCart,
     removeFromCart,
     PlusFromCart
-
 
   };
 };
