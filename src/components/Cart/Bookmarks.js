@@ -16,7 +16,7 @@ function Bookmarks() {
       const bookmarks = JSON.parse(localStorage.getItem('bookmarks'))
       setArticles(bookmarks)
       if  (!bookmarks?.length) 
-      {window.location.replace("/#/news")
+      {window.location.replace("my-app/#/news")
         return(alert('Закладок нет, перенаправление на начальную стр')
         
         
