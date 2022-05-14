@@ -33,7 +33,7 @@ function Bookmarks() {
     <div className='displayBookmarks'>
       <h2>Bookmarks</h2>
       <div>
-
+      {!currentNews?.length && <h1>Закладок не существует, добавьте свои любимые закладки</h1>}
         <table className="table">
           <table>
             <thead>
