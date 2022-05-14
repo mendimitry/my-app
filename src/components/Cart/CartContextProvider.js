@@ -12,8 +12,6 @@ export default function CartContextProvider({ children }) {
     cart.concat(movies);
     localStorage.setItem("bookmarks", JSON.stringify(cart));
 
-
-
   }
 
 
