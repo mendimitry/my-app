@@ -85,9 +85,7 @@ const Main = () => {
 
 
   };
-  const body = {
-    background: "#002137"
-  }
+
 
   const showMore1 = () => {
 
@@ -100,39 +98,38 @@ const Main = () => {
   return (
 
     <main>
-      <div style={body}>
-        <center>
+
+      <center>
 
 
-          <table>
-            <tr><th><div className="searchTitle">
-              <input name="inpSearchTitle" placeholder="Title input" onInput={e => setInput(e.target.value)} />
-              <button name="btnSearch" onClick={handleClickSearchTitle}>Ищите title</button>
-            </div></th><th><div className="searchSummary">
-              <input name="inpSearchSummary" placeholder="Summary input" onInput={e => setInput(e.target.value)} />
-              <button name="btnSearch" onClick={handleClickSearchSummary}>Ищите summary</button>
-            </div></th><th><div className="Sort">
-              <input name="inpSearchSort" placeholder="Sort input" onInput={e => setInput(e.target.value)} />
-              <button name="btnSearch" onClick={Sort}>Ищите sort</button>
-            </div></th></tr>
+        <table>
+          <tr><th><div className="searchTitle">
+            <input name="inpSearchTitle" placeholder="Title input" onInput={e => setInput(e.target.value)} />
+            <button name="btnSearch" onClick={handleClickSearchTitle}>Ищите title</button>
+          </div></th><th><div className="searchSummary">
+            <input name="inpSearchSummary" placeholder="Summary input" onInput={e => setInput(e.target.value)} />
+            <button name="btnSearch" onClick={handleClickSearchSummary}>Ищите summary</button>
+          </div></th><th><div className="Sort">
+            <input name="inpSearchSort" placeholder="Sort input" onInput={e => setInput(e.target.value)} />
+            <button name="btnSearch" onClick={Sort}>Ищите sort</button>
+          </div></th></tr>
 
 
-          </table>
-          <div className="main">{posts}
+        </table>
+        <div className="main">{posts}
+          {!posts?.length && <h1>Попробуйте найти другую новость!</h1>}
+        </div>
 
 
-          </div>
+        <button className={btn} onClick={showMore}>
+          Page BackWard
+        </button>
+        <button className={btn} onClick={showMore1}>
+          Page Forward
+        </button>
 
+      </center>
 
-          <button className={btn} onClick={showMore}>
-            Page BackWard
-          </button>
-          <button className={btn} onClick={showMore1}>
-            Page Forward
-          </button>
-
-        </center>
-      </div>
     </main>
 
 
