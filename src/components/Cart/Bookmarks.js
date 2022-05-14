@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom';
 import Pagination from "../bookmark/Pagination";
 
-
-
+import { createHashHistory } from "history";
 
 function Bookmarks() {
   const [articles, setArticles] = useState([])
@@ -15,7 +15,17 @@ function Bookmarks() {
     const getBookmarks = async () => {
       const bookmarks = JSON.parse(localStorage.getItem('bookmarks'))
       setArticles(bookmarks)
+      if  (!bookmarks?.length) 
+      {window.location.replace("/")
+        return(alert('Закладок нет, перенаправление на начальную стр')
+        
+        
+        )
+
+      }
+
     }
+  
     getBookmarks()
   }, [])
 
@@ -33,7 +43,7 @@ function Bookmarks() {
     <div className='displayBookmarks'>
       <h2>Bookmarks</h2>
       <div>
-      {!currentNews?.length && <h1>Закладок не существует, добавьте свои любимые закладки</h1>}
+
         <table className="table">
           <table>
             <thead>
