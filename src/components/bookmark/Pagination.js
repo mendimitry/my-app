@@ -11,7 +11,7 @@ const Pagination = ({newsPerPage, totalNews, paginate}) =>{
           pageNumbers.map(number => (
   
               <li className="pageItem" key={number}>
-                      <a href="https://mendimitry.github.io/my-app/#/bookmarks" className="pageLink" onClick={()=> paginate(number)}>{number}</a>
+                      <a href="/my-app/#/bookmarks" className="pageLink" onClick={()=> paginate(number)}>{number}</a>
               </li>
           ))
       }
