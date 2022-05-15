@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 
-
+import Pagination from "../bookmark/Pagination";
 import Inform from "./Inform";
 
 
@@ -10,10 +10,14 @@ const Main = () => {
   );
   const [news, SetNews] = useState([])
   const [input, setInput] = useState('');
+  const [start, setStart] = useState('');
   let [limit, setLimit] = useState(50);
   let [publishedAt, setPublishedAt] = useState("publishedAt");
   let [btn, setBtn] = useState("main-btn");
   let [loader, setLoader] = useState("hidden");
+  const [newsPerPage] = useState('')
+  const [currentPage, setCurrentPage] = useState(1);
+  let PageSize = 10;
 
 
 
@@ -22,7 +26,7 @@ const Main = () => {
   let getNews = () => {
     async function getData() {
       const response = await fetch(
-        `https://api.spaceflightnewsapi.net/v3/articles?_limit=${limit}`
+        `https://api.spaceflightnewsapi.net/v3/articles?_start=${start}`
       );
       SetNews(response.data);
       const data = await response.json();
@@ -35,7 +39,7 @@ const Main = () => {
 
   const handleClickSearchTitle = async (e) => {
     const res = await fetch(
-      `https://api.spaceflightnewsapi.net/v3/articles?_limit=50&title_contains=${input}`
+      `https://api.spaceflightnewsapi.net/v3/articles?_title_contains=${input}`
     );
     SetNews(res.data);
     const data = await res.json();
@@ -46,7 +50,7 @@ const Main = () => {
 
   const handleClickSearchSummary = async (e) => {
     const res = await fetch(
-      `https://api.spaceflightnewsapi.net/v3/articles?_limit=50&summary_contains=${input}`
+      `https://api.spaceflightnewsapi.net/v3/articles?_summary_contains=${input}`
     );
     SetNews(res.data);
     const data = await res.json();
@@ -75,25 +79,9 @@ const Main = () => {
 
 
   // Main Component Lifecycle Changes
-  useEffect(getNews, [limit]);
+  useEffect(getNews, [start]);
 
   // Button "Show More" Click Handler
-  const showMore = () => {
-
-    setLoader("loader");
-    setLimit((prevLimit) => prevLimit + 9);
-
-
-  };
-
-
-  const showMore1 = () => {
-
-    setLoader("loader");
-    setLimit((prevLimit) => prevLimit - 9);
-
-
-  };
 
   return (
 
@@ -103,6 +91,7 @@ const Main = () => {
 
 
         <table>
+        
           <tr><th><div className="searchTitle">
             <input name="inpSearchTitle" placeholder="Title input" onInput={e => setInput(e.target.value)} />
             <button name="btnSearch" onClick={handleClickSearchTitle}>Ищите title</button>
@@ -119,15 +108,14 @@ const Main = () => {
         <div className="main">{posts}
           {!posts?.length && <h1>Попробуйте найти другую новость!</h1>}
         </div>
+       
 
 
-        <button className={btn} onClick={showMore}>
-          Page BackWard
-        </button>
-        <button className={btn} onClick={showMore1}>
-          Page Forward
-        </button>
+    
+<th><div className="searchStart">
+            <input name="inpSearchStart" placeholder="Start input" onInput={e => setStart(e.target.value)} />
 
+          </div></th>
       </center>
 
     </main>
