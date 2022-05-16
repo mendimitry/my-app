@@ -73,13 +73,13 @@ function Bookmarks() {
 
 
         </table>
-        {articles.length > 5 && <>
+        {articles?.length > 5 && <>
 
           <Pagination
             className="centerPagination"
 
             newsPerPage={newsPerPage}
-            totalNews={articles.length}
+            totalNews={articles?.length}
             paginate={paginate}
 
 

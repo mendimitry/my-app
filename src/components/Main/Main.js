@@ -1,97 +1,139 @@
-import React, { useState, useEffect, useMemo } from "react";
 
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+import { useCart } from "../../hooks/cart/useCart";
+import ReactPaginate from 'react-paginate';
 import Pagination from "../bookmark/Pagination";
 import Inform from "./Inform";
+import { Link } from "react-router-dom";
 
 
 const Main = () => {
 
-  let [posts, setPosts] = useState(
-  );
-  const [news, SetNews] = useState([])
-  const [input, setInput] = useState('');
+  const [postsPerPage] = useState(5);
+  const [offset, setOffset] = useState(1);
   const [start, setStart] = useState('');
-  let [limit, setLimit] = useState(50);
-  let [publishedAt, setPublishedAt] = useState("publishedAt");
-  let [btn, setBtn] = useState("main-btn");
-  let [loader, setLoader] = useState("hidden");
-  const [newsPerPage] = useState('')
-  const [currentPage, setCurrentPage] = useState(1);
-  let PageSize = 10;
+  const [posts, setAllPosts] = useState();
 
+  const [pageCount, setPageCount] = useState(10)
+    const [news, SetNews] = useState([])
+ 
+    const [input, setInput] = useState('');
 
-
-
-
-  let getNews = () => {
-    async function getData() {
-      const response = await fetch(
-        `https://api.spaceflightnewsapi.net/v3/articles?_start=${start}`
+    let [limit, setLimit] = useState(50);
+    let [publishedAt, setPublishedAt] = useState("publishedAt");
+    let [btn, setBtn] = useState("main-btn");
+    let [loader, setLoader] = useState("hidden");
+    const [currentPage, setCurrentPage] = useState(1)
+    const [newsPerPage] = useState('')
+  
+    const handleClickSearchTitle = async (e) => {
+      const res = await fetch(
+        `https://api.spaceflightnewsapi.net/v3/articles?_title_contains=${input}`
       );
-      SetNews(response.data);
-      const data = await response.json();
-      setPosts(data.map((item) => <Inform key={item.id} data={item} />));
+      SetNews(res.data);
+      const data = await res.json();
+      setAllPosts(data.map((item) => <Inform key={item.id} data={item} />));
       setLoader("hidden");
       setBtn("main-btn");
     }
-    getData();
+  
+    const handleClickSearchSummary = async (e) => {
+      const res = await fetch(
+        `https://api.spaceflightnewsapi.net/v3/articles?_summary_contains=${input}`
+      );
+      SetNews(res.data);
+      const data = await res.json();
+      setAllPosts(data.map((item) => <Inform key={item.id} data={item} />));
+      setLoader("hidden");
+      setBtn("main-btn");
+    }
+  
+  
+    const Sort = async (e) => {
+      const res = await fetch(
+        `https://api.spaceflightnewsapi.net/v3/articles?_sort=publishedAt&summary_contains=${input}`
+      );
+      SetNews(res.data);
+      const data = await res.json();
+      setAllPosts(data.map((item) => <Inform key={item.id} data={item} />));
+      setLoader("hidden");
+      setBtn("main-btn");
+    }
+  
+    const { addToCart } = useCart();
+    
+  const getPostData = (data) => {
+
+    return (
+
+data.map((post) => <div className="container"  key={post} data={post}>
+       <div className="card">
+<center>
+      <div className="card-content">
+        
+          <h2 className="card-heading">Title : {post.title}</h2>
+          <p className="card-description">Summary : {post.summary}</p>
+          <p className="card-description">Date Publication : {post.publishedAt}</p>
+          <img
+            src={post.imageUrl} width="200" height="500"
+            alt="new"
+          />
+                    <button
+            onClick={() => addToCart(post)}
+          >bookmarks
+          
+          </button>
+          <Link to={`/news/${post.id}`} className='card-url'>
+            Читать новость
+            
+          </Link>
+          
+        </div>
+        
+          
+          
+         
+          </center>
+        </div>
+       
+      </div>
+      
+      )
+    )
+
+  }
+
+  const getAllPosts = async () => {
+    const response = await fetch(
+      `https://api.spaceflightnewsapi.net/v3/articles?_start=${start}&_limit=50`
+    );
+    const data = await response.json();
+    const slice = data.slice(offset - 1, offset - 1 + postsPerPage)
+    const postData = getPostData(slice)
+    setAllPosts(postData)
+    setPageCount(Math.ceil(data.length / postsPerPage))
+
+    
+  }
+
+   
+  const handlePageClick = (event) => {
+    const selectedPage = event.selected;
+    setOffset(selectedPage + 1)
   };
 
-  const handleClickSearchTitle = async (e) => {
-    const res = await fetch(
-      `https://api.spaceflightnewsapi.net/v3/articles?_title_contains=${input}`
-    );
-    SetNews(res.data);
-    const data = await res.json();
-    setPosts(data.map((item) => <Inform key={item.id} data={item} />));
-    setLoader("hidden");
-    setBtn("main-btn");
-  }
-
-  const handleClickSearchSummary = async (e) => {
-    const res = await fetch(
-      `https://api.spaceflightnewsapi.net/v3/articles?_summary_contains=${input}`
-    );
-    SetNews(res.data);
-    const data = await res.json();
-    setPosts(data.map((item) => <Inform key={item.id} data={item} />));
-    setLoader("hidden");
-    setBtn("main-btn");
-  }
-
-
-  const Sort = async (e) => {
-    const res = await fetch(
-      `https://api.spaceflightnewsapi.net/v3/articles?_sort=publishedAt&summary_contains=${input}`
-    );
-    SetNews(res.data);
-    const data = await res.json();
-    setPosts(data.map((item) => <Inform key={item.id} data={item} />));
-    setLoader("hidden");
-    setBtn("main-btn");
-  }
-
-
-  // if(bookmarks === [] || !bookmarks.find(item => item.id === post.id) ? true : false ){
-  //     bookmarks.push(post)
-  //     localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
-  // }
-
-
-  // Main Component Lifecycle Changes
-  useEffect(getNews, [start]);
-
-  // Button "Show More" Click Handler
+  useEffect(() => {
+    getAllPosts()
+  }, [offset])
+ 
+  
 
   return (
+    <div className="main-app">
+      {posts}
 
-    <main>
-
-      <center>
-
-
-        <table>
-        
+      <table>
           <tr><th><div className="searchTitle">
             <input name="inpSearchTitle" placeholder="Title input" onInput={e => setInput(e.target.value)} />
             <button name="btnSearch" onClick={handleClickSearchTitle}>Ищите title</button>
@@ -105,22 +147,14 @@ const Main = () => {
 
 
         </table>
-        <div className="main">{posts}
-          {!posts?.length && <h1>Попробуйте найти другую новость!</h1>}
-        </div>
-       
 
-
-    
-<th><div className="searchStart">
-            <input name="inpSearchStart" placeholder="Start input" onInput={e => setStart(e.target.value)} />
-
-          </div></th>
-      </center>
-
-    </main>
-
-
+      <ReactPaginate
+        breakClassName={"break-me"}
+        pageCount={pageCount}
+        onPageChange={handlePageClick}
+        containerClassName={"pagination"}
+        activeClassName={"active"} />
+    </div>
   );
 };
 
