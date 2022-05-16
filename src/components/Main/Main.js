@@ -109,7 +109,7 @@ data.map((post) => <div className="container"  key={post} data={post}>
 
   const getAllPosts = async () => {
     const response = await fetch(
-      `https://api.spaceflightnewsapi.net/v3/articles?_start=${start}&_limit=50`
+      `https://api.spaceflightnewsapi.net/v3/articles?_start=${start}&_limit=49`
     );
     const data = await response.json();
     const slice = data.slice(offset - 1, offset - 1 + postsPerPage)
