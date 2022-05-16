@@ -67,9 +67,12 @@ const Main = () => {
 
     return (
 
+      
 data.map((post) => <div className="container"  key={post} data={post}>
        <div className="card">
+         
 <center>
+  
       <div className="card-content">
         
           <h2 className="card-heading">Title : {post.title}</h2>
@@ -126,13 +129,16 @@ data.map((post) => <div className="container"  key={post} data={post}>
   useEffect(() => {
     getAllPosts()
   }, [offset])
- 
+  useEffect(() => {
+    getAllPosts()
+  }, [start])
   
 
   return (
     <div className="main-app">
-      {posts}
 
+      {posts}
+      <input  onInput={e => setStart(e.target.value)} />
       <table>
           <tr><th><div className="searchTitle">
             <input name="inpSearchTitle" placeholder="Title input" onInput={e => setInput(e.target.value)} />
@@ -145,10 +151,10 @@ data.map((post) => <div className="container"  key={post} data={post}>
             <button name="btnSearch" onClick={Sort}>Ищите sort</button>
           </div></th></tr>
 
-
         </table>
 
       <ReactPaginate
+      
         breakClassName={"break-me"}
         pageCount={pageCount}
         onPageChange={handlePageClick}
