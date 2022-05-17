@@ -10,11 +10,7 @@ import { Link } from "react-router-dom";
 
 const Main = () => {
 
-  const [postsPerPage] = useState(5);
-  const [offset, setOffset] = useState(1);
-  const [start, setStart] = useState('');
-  const [posts, setAllPosts] = useState();
-
+  
 
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -31,7 +27,6 @@ const Main = () => {
   let [btn, setBtn] = useState("main-btn");
   let [loader, setLoader] = useState("hidden");
   const [currentPage, setCurrentPage] = useState(1)
-  const [newsPerPage] = useState('')
 
   const handleClickSearchTitle = async (e) => {
     setLoading(true);
@@ -164,17 +159,13 @@ const Main = () => {
   }
 
   const pageChange = (data) => {
-    setCurrentPage(data.selected);
+    setCurrentPage(data.selected + 1)
     fetchData();
   }
 
   useEffect(() => {
     fetchData();
-    // Automatic data refresh after 5 minutes
-    const interval = setInterval(() => {
-      fetchData();
-    }, 300000);
-    return () => clearInterval(interval);
+    
   }, []);
 
 
@@ -236,12 +227,8 @@ const Main = () => {
 
       <div className="default light">
         <div className="container">
-
-
-
           {articles.map((posts) => (
             <Inform key={posts.id} data={posts} />
-
           ))}
         </div>
 
@@ -252,6 +239,8 @@ const Main = () => {
         marginPagesDisplayed={1}
         pageRangeDisplayed={10}
         onPageChange={pageChange}
+
+        
       />
     </div>
 
