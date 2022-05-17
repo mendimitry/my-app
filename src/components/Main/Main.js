@@ -35,25 +35,53 @@ const Main = () => {
     const [newsPerPage] = useState('')
   
     const handleClickSearchTitle = async (e) => {
-      const res = await fetch(
-        `https://api.spaceflightnewsapi.net/v3/articles?_title_contains=${input}`
-      );
-      SetNews(res.data);
-      const data = await res.json();
-      setAllPosts(data.map((item) => <Inform key={item.id} data={item} />));
-      setLoader("hidden");
-      setBtn("main-btn");
+      setLoading(true);
+      let endpoint = `https://api.spaceflightnewsapi.net/v3/articles?_title_contains=${input}`;
+      fetch(endpoint)
+      .then((response) => response.json())
+      .then((response) => {
+          setLoading(false);
+          const newArticles = response.map((data) => ({
+            title: data.title,
+            id: data.id,
+            summary: data.summary,
+            publishedAt: data.publishedAt,
+           imageUrl: data.imageUrl
+
+          }))
+        setArticles(newArticles);
+        setPageCount(response.nbPages);
+      })
+      // Error handling
+      .catch(error => {
+        setLoading(false);
+        alert(error);
+      });
     }
   
     const handleClickSearchSummary = async (e) => {
-      const res = await fetch(
-        `https://api.spaceflightnewsapi.net/v3/articles?_summary_contains=${input}`
-      );
-      SetNews(res.data);
-      const data = await res.json();
-      setAllPosts(data.map((item) => <Inform key={item.id} data={item} />));
-      setLoader("hidden");
-      setBtn("main-btn");
+      setLoading(true);
+      let endpoint = `https://api.spaceflightnewsapi.net/v3/articles?_summary_contains=${input}`;
+      fetch(endpoint)
+      .then((response) => response.json())
+      .then((response) => {
+          setLoading(false);
+          const newArticles = response.map((data) => ({
+            title: data.title,
+            id: data.id,
+            summary: data.summary,
+            publishedAt: data.publishedAt,
+           imageUrl: data.imageUrl
+
+          }))
+        setArticles(newArticles);
+        setPageCount(response.nbPages);
+      })
+      // Error handling
+      .catch(error => {
+        setLoading(false);
+        alert(error);
+      });
     }
     const Inform = ({ data }) => {
 
@@ -150,16 +178,34 @@ const Main = () => {
         return () => clearInterval(interval);
     }, [query]);
 
+
+
+    
+  
     
     const Sort = async (e) => {
-      const res = await fetch(
-        `https://api.spaceflightnewsapi.net/v3/articles?_sort=publishedAt&summary_contains=${input}`
-      );
-      SetNews(res.data);
-      const data = await res.json();
-      setAllPosts(data.map((item) => <Inform key={item.id} data={item} />));
-      setLoader("hidden");
-      setBtn("main-btn");
+      setLoading(true);
+      let endpoint = `https://api.spaceflightnewsapi.net/v3/articles?_sort=publishedAt&summary_contains=${input}`;
+      fetch(endpoint)
+      .then((response) => response.json())
+      .then((response) => {
+          setLoading(false);
+          const newArticles = response.map((data) => ({
+            title: data.title,
+            id: data.id,
+            summary: data.summary,
+            publishedAt: data.publishedAt,
+           imageUrl: data.imageUrl
+
+          }))
+        setArticles(newArticles);
+        setPageCount(response.nbPages);
+      })
+      // Error handling
+      .catch(error => {
+        setLoading(false);
+        alert(error);
+      });
     }
   
     const { addToCart } = useCart();
@@ -169,17 +215,12 @@ const Main = () => {
    
 
 
-  useEffect(() => {
-    fetchData()
-  }, [currentPage])
+ 
   
 
   return (
     <div className="main-app">
 
-
-      <h2>TEST</h2>
-      <input  onInput={e => setStart(e.target.value)} />
       <table>
           <tr><th><div className="searchTitle">
             <input name="inpSearchTitle" placeholder="Title input" onInput={e => setInput(e.target.value)} />
@@ -198,18 +239,13 @@ const Main = () => {
       <div className="container">
 
         
-        <div className="loader-container" style={loading ? {display:"block"} : {display:"none"}}> 
-          <div className="loader"></div>
-        </div>
-        <section className="SearchResults" style={loading ? {display:"none"} : {display:"block"}}>
-          <div className="SearchResults_container">
-           
+
             {articles.map((posts) => (
               <Inform key={posts.id} data={posts} />
               
             ))}
           </div>
-        </section>
+    
       </div>
 
        <ReactPaginate
@@ -220,7 +256,6 @@ const Main = () => {
        />
        </div>
 
-       </div>
       
   );
 };
