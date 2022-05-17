@@ -166,7 +166,7 @@ const Main = () => {
   useEffect(() => {
     fetchData();
     
-  }, []);
+  }, [currentPage]);
 
 
 
