@@ -4,7 +4,7 @@ import axios from 'axios'
 import { useCart } from "../../hooks/cart/useCart";
 import ReactPaginate from 'react-paginate';
 import Pagination from "../bookmark/Pagination";
-import Inform from "./Inform";
+
 import { Link } from "react-router-dom";
 
 
@@ -15,7 +15,14 @@ const Main = () => {
   const [start, setStart] = useState('');
   const [posts, setAllPosts] = useState();
 
-  const [pageCount, setPageCount] = useState(10)
+
+  const [articles, setArticles] = useState([]);
+  const [query, setQuery] = useState("react");
+  const [loading, setLoading] = useState(false);
+
+
+
+  const [pageCount, setPageCount] = useState(50);
     const [news, SetNews] = useState([])
  
     const [input, setInput] = useState('');
@@ -48,8 +55,102 @@ const Main = () => {
       setLoader("hidden");
       setBtn("main-btn");
     }
+    const Inform = ({ data }) => {
+
+
+      const { addToCart } = useCart();
+      return (
+    
+        <div className="card">
+    <center>
+          <div className="card-content">
+            
+              <h2 className="card-heading">Title : {data.title}</h2>
+              <p className="card-description">Summary : {data.summary}</p>
+              <p className="card-description">Date Publication : {data.publishedAt}</p>
+              <img
+                src={data.imageUrl} width="200" height="500"
+                alt="new"
+              />
+            </div>
+            
+              {/*<a
+    
+                href={data.url}
+                target="_blank"
+                rel="noreferrer"
+                className="card-url"
+              >
+                Читать новость в Интернете
+              </a> */}
+              &nbsp;
+    
+              {/* <a
+                href={`/news/${data.id}`}
+                rel="noreferrer"
+                className="card-url"
+              >
+                
+              </a> */}
+              <Link to={`/news/${data.id}`} className='card-url'>
+                Читать новость
+              </Link>
+              
+              
+              <button
+    className='card-url'
+                onClick={() => addToCart(data)}
+              >bookmarks
+              
+              </button>
+              </center>
+            </div>
+            
+         
+      
+      );
+    };
   
+    const fetchData = () => {
+      setLoading(true);
+      let endpoint = `https://api.spaceflightnewsapi.net/v3/articles?_start=${currentPage}`;
+      fetch(endpoint)
+      .then((response) => response.json())
+      .then((response) => {
+          setLoading(false);
+          const newArticles = response.map((data) => ({
+            title: data.title,
+            id: data.id,
+            summary: data.summary,
+            publishedAt: data.publishedAt,
+           imageUrl: data.imageUrl
+
+          }))
+        setArticles(newArticles);
+        setPageCount(response.nbPages);
+      })
+      // Error handling
+      .catch(error => {
+        setLoading(false);
+        alert(error);
+      });
+    }
   
+    const pageChange = (data) => {
+      setCurrentPage(data.selected);
+      fetchData();
+    }
+  
+    useEffect(() => {
+        fetchData();
+        // Automatic data refresh after 5 minutes
+        const interval = setInterval(() => {
+          fetchData();
+        }, 300000);
+        return () => clearInterval(interval);
+    }, [query]);
+
+    
     const Sort = async (e) => {
       const res = await fetch(
         `https://api.spaceflightnewsapi.net/v3/articles?_sort=publishedAt&summary_contains=${input}`
@@ -63,81 +164,20 @@ const Main = () => {
   
     const { addToCart } = useCart();
     
-  const getPostData = (data) => {
-
-    return (
-
-      
-data.map((post) => <div className="container"  key={post} data={post}>
-       <div className="card">
-         
-<center>
   
-      <div className="card-content">
-        
-          <h2 className="card-heading">Title : {post.title}</h2>
-          <p className="card-description">Summary : {post.summary}</p>
-          <p className="card-description">Date Publication : {post.publishedAt}</p>
-          <img
-            src={post.imageUrl} width="200" height="500"
-            alt="new"
-          />
-                    <button
-            onClick={() => addToCart(post)}
-          >bookmarks
-          
-          </button>
-          <Link to={`/news/${post.id}`} className='card-url'>
-            Читать новость
-            
-          </Link>
-          
-        </div>
-        
-          
-          
-         
-          </center>
-        </div>
-       
-      </div>
-      
-      )
-    )
-
-  }
-
-  const getAllPosts = async () => {
-    const response = await fetch(
-      `https://api.spaceflightnewsapi.net/v3/articles?_start=${start}&_limit=49`
-    );
-    const data = await response.json();
-    const slice = data.slice(offset - 1, offset - 1 + postsPerPage)
-    const postData = getPostData(slice)
-    setAllPosts(postData)
-    setPageCount(Math.ceil(data.length / postsPerPage))
-
-    
-  }
 
    
-  const handlePageClick = (event) => {
-    const selectedPage = event.selected;
-    setOffset(selectedPage + 1)
-  };
+
 
   useEffect(() => {
-    getAllPosts()
-  }, [offset])
-  useEffect(() => {
-    getAllPosts()
-  }, [start])
+    fetchData()
+  }, [currentPage])
   
 
   return (
     <div className="main-app">
 
-      {posts}
+
       <h2>TEST</h2>
       <input  onInput={e => setStart(e.target.value)} />
       <table>
@@ -154,14 +194,34 @@ data.map((post) => <div className="container"  key={post} data={post}>
 
         </table>
 
-      <ReactPaginate
+        <div className="default light">
+      <div className="container">
+
+        
+        <div className="loader-container" style={loading ? {display:"block"} : {display:"none"}}> 
+          <div className="loader"></div>
+        </div>
+        <section className="SearchResults" style={loading ? {display:"none"} : {display:"block"}}>
+          <div className="SearchResults_container">
+           
+            {articles.map((posts) => (
+              <Inform key={posts.id} data={posts} />
+              
+            ))}
+          </div>
+        </section>
+      </div>
+
+       <ReactPaginate
+         pageCount={30}
+         marginPagesDisplayed={1}
+         pageRangeDisplayed={10}
+         onPageChange={pageChange}
+       />
+       </div>
+
+       </div>
       
-        breakClassName={"break-me"}
-        pageCount={pageCount}
-        onPageChange={handlePageClick}
-        containerClassName={"pagination"}
-        activeClassName={"active"} />
-    </div>
   );
 };
 
