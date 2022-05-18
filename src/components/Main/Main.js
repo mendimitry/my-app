@@ -65,7 +65,9 @@ const Main = () => {
           id: data.id,
           summary: data.summary,
           publishedAt: data.publishedAt,
-          imageUrl: data.imageUrl
+          imageUrl: data.imageUrl,
+          url: data.url,
+          updatedAt: data.updatedAt
 
         }))
         setArticles(newArticles);
@@ -145,7 +147,9 @@ const Main = () => {
           id: data.id,
           summary: data.summary,
           publishedAt: data.publishedAt,
-          imageUrl: data.imageUrl
+          imageUrl: data.imageUrl,
+          url: data.url,
+          updatedAt: data.updatedAt
 
         }))
         setArticles(newArticles);
@@ -185,7 +189,9 @@ const Main = () => {
           id: data.id,
           summary: data.summary,
           publishedAt: data.publishedAt,
-          imageUrl: data.imageUrl
+          imageUrl: data.imageUrl,
+          url: data.url,
+          updatedAt: data.updatedAt
 
         }))
         setArticles(newArticles);
